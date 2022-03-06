@@ -2,6 +2,15 @@ import amqp from 'amqplib'
 
 const conn = await amqp.connect('amqp://guest:guest@localhost:5672')
 const channel = await conn.createChannel()
+process.once('SIGINT', async () => {
+  await channel.deleteQueue(queue1Name)
+  await channel.deleteQueue(queue2Name)
+
+  await channel.deleteExchange(exchangeName)
+
+  await channel.close()
+  await conn.close()
+});
 
 const exchangeName = 'mooping.ex.fanout'
 const queue1Name = 'mooping.queue1'
@@ -29,15 +38,4 @@ await channel.bindQueue(queue2Name, exchangeName)
 
 channel.publish(exchangeName, '', Buffer.from('mooping.2'))
 channel.publish(exchangeName, '', Buffer.from('mooping.3'))
-
-setTimeout(async () => {
-  await channel.deleteQueue(queue1Name)
-  await channel.deleteQueue(queue2Name)
-
-  await channel.deleteExchange(exchangeName)
-
-  await channel.close()
-  await conn.close()
-}, 10000)
-
 
