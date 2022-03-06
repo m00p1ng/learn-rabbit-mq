@@ -1,0 +1,10 @@
+{
+  "name": "learn-rabbit-mq",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Mongkonchai Priyachiwa <mongkonchai@opn.ooo>",
+  "license": "MIT",
+  "dependencies": {
+    "amqplib": "^0.8.0"
+  }
+}
